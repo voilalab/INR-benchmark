@@ -336,10 +336,7 @@ class MultiscaleBACON(MFNBase):
             model_input = {key: input.clone().detach().requires_grad_(True)
                            for key, input in model_input.items()}
 
-        # if 'coords' in model_input:
         coords = model_input
-        # elif 'ray_samples' in model_input:
-        #     coords = model_input['ray_samples']
 
         outputs = []
         if self.reuse_filters:
@@ -385,9 +382,6 @@ class MultiscaleBACON(MFNBase):
             return {'model_in': model_input['coords'],
                     'model_out': outputs}  # outputs is a list of tensors
         
-        # print(model_input.max(),model_input.min(), model_input.shape, len(outputs))
-        # print(outputs[0].shape, outputs[1].shape, outputs[2].shape)
-        # return {'model_in': model_input, 'model_out': {'output': outputs}}
         return outputs
     
 class BACON(nn.Module):
@@ -418,7 +412,6 @@ class BACON(nn.Module):
             layer_width_dict = {1e4:34, 3e4:60, 1e5:110, 3e5:192, 1e6:352, 3e6:611}
 
             self.hidden_features = layer_width_dict[max_params]
-            # self.hidden_features = max_params
             input_scales = [1/24, 1/24, 1/24, 1/16, 1/16, 1/8, 1/8, 1/4, 1/4]
             output_layers = [2, 4, 6, 8]
             self.model = model = m(dimension, self.hidden_features, out_size=out_features,
@@ -430,11 +423,6 @@ class BACON(nn.Module):
                     output_layers=output_layers,
                     reuse_filters=True)
         
-
-        # model_parameters = filter(lambda p: p.requires_grad, model.parameters())
-
-        # params = sum([np.prod(p.size()) for p in model_parameters])
-        # print(f'Num. Parameters: {params} for bacon')
 
     def forward(self, x):
         output = self.model(x)
@@ -471,9 +459,4 @@ if __name__ == '__main__':
     # output
     for target, h, actual in closest_configs:
         print(f"Target: {target}, Hidden: {h}, Actual Params: {actual}")
-    # dimension = 3
-    # model = BACON(dimension, 1e4, resolution=[100,100,100])
-    # coords = np.linspace(0, 1, 100, endpoint=False)
-    # x = torch.tensor(np.stack(np.meshgrid(*[coords for _ in range(dimension)]), -1), dtype = torch.float32)
-    # output = model(x)
-    # print(output[-1].shape)
+    

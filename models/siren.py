@@ -72,8 +72,6 @@ class Siren(nn.Module):
 
         if hidden_out:
             self.out_features = hidden_features
-
-            # print(str(self.out_features)+'sadasdsadsad')
         if outermost_linear:
             final_linear = nn.Linear(hidden_features, self.out_features)
             
@@ -104,6 +102,3 @@ if __name__ == '__main__':
         
         print(inr, count_parameters(inr))
     
-    # coords = np.linspace(0, 1, 100, endpoint=False)
-    # x = torch.tensor(np.stack(np.meshgrid(*[coords for _ in range(2)]), -1))
-    # print(f'model input/output shape: {x.shape}/{inr.model(x).shape}')

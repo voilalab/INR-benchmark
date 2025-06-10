@@ -75,7 +75,6 @@ class ComplexGaborLayer(nn.Module):
             dtype = torch.float
         else:
             dtype = torch.cfloat
-            # dtype = torch.complex128
             
         # Set trainable parameters if they are to be simultaneously optimized
         self.omega_0 = nn.Parameter(self.omega_0*torch.ones(1), trainable)
@@ -107,13 +106,10 @@ class Wire(nn.Module):
         # Since complex numbers are two real numbers, reduce the number of 
         # hidden parameters by 2
         self.out_features = out_features
-        # hidden_features = calc_layer_width(in_features, self.out_features, hidden_layers, 1, max_params, is_dict=hidden_out)#int(hidden_features/np.sqrt(2))
         max_params //= 2
-        hidden_features = calc_layer_width(in_features, self.out_features, hidden_layers, 1, max_params, is_dict=hidden_out)#int(hidden_features/np.sqrt(2))
-        # hidden_features = int(np.round(hidden_features/np.sqrt(2)))
+        hidden_features = calc_layer_width(in_features, self.out_features, hidden_layers, 1, max_params, is_dict=hidden_out)
         tqdm.write(f'Wire layer_width: {hidden_features}')
         dtype = torch.cfloat
-        # dtype = torch.complex128
         self.complex = True
         self.wavelet = 'gabor'    
         

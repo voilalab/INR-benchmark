@@ -124,7 +124,3 @@ if __name__ == '__main__':
     model_name = 'FourFeat'
     get_model(model_name)
     
-# def get_model(inr_class, max_params):
-#     model = inr_class
-
-# TODO: endow each INR class with a function to pick the largest model with no more than N parameters

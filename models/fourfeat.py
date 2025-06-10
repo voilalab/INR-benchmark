@@ -6,14 +6,6 @@ from tqdm import tqdm
 from model_utils import calc_layer_width
 
 torch.set_default_dtype(torch.float32)
-# torch.set_default_device('cuda')
-
-
-# import sys
-# sys.path.append('../')
-# from utils import get_free_gpu
-
-# torch.manual_seed(1234)
 
 class InputMapping(nn.Module):
     def __init__(self, B, dimension):
@@ -27,7 +19,6 @@ class InputMapping(nn.Module):
 
     # Fourier feature mapping (https://colab.research.google.com/github/tancik/fourier-feature-networks/blob/master/Demo.ipynb#scrollTo=OcJUfBV0dCww)
     def forward(self, x):
-        # print(x.shape, self.B.shape)
         x_proj = (2.*np.pi*x) @ self.B.T # B,2 x 2,1000
         result = torch.concatenate([torch.sin(x_proj), torch.cos(x_proj)], axis=-1)
         
@@ -43,8 +34,6 @@ class FourFeat(nn.Module):
 
         # in fourier features embedding process makes the embedded shape always 2*mapping size independent to dimension
         layer_width = calc_layer_width(2, self.out_features, num_hidden_layers, mapping_size, max_params, is_dict=hidden_out)
-
-        
 
         # Create the random features for this model
         self.dimension = dimension
@@ -70,10 +59,8 @@ class FourFeat(nn.Module):
         self.num_params = self.num_params + layer_width
         tqdm.write(f'layer_width: {layer_width}, num params: {self.num_params}, sigma: {mapping_sigma}')
 
-        # print(self.num_params)
     def forward(self, x):
         x = self.model(x)
-        # print(f'model output {x.shape}')
         return x
 
 import time
@@ -82,9 +69,5 @@ if __name__ == '__main__':
     for model_size in [1e4, 3e4, 1e5, 3e5, 1e6, 3e6]:
         inr = FourFeat(dimension, model_size, 10)
         print(inr)
-
-        # init_time = time.time()
         coords = np.linspace(0, 1, 100, endpoint=False)
         x = torch.tensor(np.stack(np.meshgrid(*[coords for _ in range(dimension)]), -1))
-        # print(time.time() - init_time)
-        # print(f'model input/output shape: {x.shape}/{inr.model(x).shape}')

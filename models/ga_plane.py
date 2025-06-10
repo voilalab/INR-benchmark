@@ -18,7 +18,6 @@ bias = True
 include_lowres = True
 
 resolutions1 = [32, 64, 128, 192, 256, 320, 384, 448, 512]
-# resolutions2 = [16, 32, 64, 128, 256]
 resolutions2 = [1]
 feature_dims = [32, 64, 128, 192, 256, 320, 384]
 hidden_dims = [32, 64, 128, 256]
@@ -104,7 +103,6 @@ def find_pareto(xvals, yvals):
 class GAPlane(nn.Module):
     def __init__(self, dimension, max_params, out_features = 1, dim2 = 20, dim_features = feature_dims, m=0, resolution = [1000, 1000], operation='multiply', decoder = 'nonconvex', interpolation=interpolation, bias=bias, include_lowres=True, hidden_out = False):
         super(GAPlane, self).__init__()
-        # self.resx, self.resy = resolution
         self.operation = operation
         self.decoder = decoder
         self.interpolation = interpolation
@@ -114,7 +112,6 @@ class GAPlane(nn.Module):
         self.dimension = dimension
         self.num_hidden_layers = 1
         if self.dimension == 2: # separate x, y and apply those into the line feature x and y
-          # dim1 = 1000
           if len(resolution) == 3:
             self.resx, self.resy, _ = resolution
           else:
@@ -122,36 +119,19 @@ class GAPlane(nn.Module):
           dim1 = self.resx
         else: 
           self.resx, self.resy, dim1 = resolution
-          # print(resolution)
         if out_features == 3:
           if self.resx > 1000: #super_res
             self.resx, self.resy = self.resx//4, self.resy//4
-          # print(f'dim1 2D: {self.resx} {self.resy}')
         if dimension == 2 and max_params == 1e4 and self.resx == 1000:
           dim2 = 11
           res_val = 550
           self.resx, self.resy = res_val, res_val
-        # a = 1
-        # c = bias -1*max_params
-        # b = self.num_hidden_layers + 1
         a = self.num_hidden_layers
         c = out_features - max_params
         if dimension == 3:
           dim3 = 5
-          #num_params = res1 * feature_dim * 2 + res2 * res2 * feature_dim * include_lowres + feature_dim * hidden_dim + hidden_dim + (hidden_dim + 1) * bias
-          # res1*2 + res2*res2 + 1 + bias
-          # if self.dimension == 2:
-          #   b = dim1*self.dimension + dim2*dim2*include_lowres + 1 + bias
-          
-          # b = self.resx + self.resy + dim1 + dim2*dim2*include_lowres*self.dimension + dim3*dim3*dim3 + 1 + bias
-          
-          
-          # width = (-b + np.sqrt(b*b - 4*a*c)) / (2*a) # formula of roots
-          # dim_features = int(np.floor(width))
-          # a = self.resx + self.resy + dim1 + (dim2**2)*3 + dim3**3 + self.num_hidden_layers
           enc_params = self.resx + self.resy + dim1 + (dim2**2)*3 + dim3**3
           b = enc_params + 1 + out_features
-          # b = self.resx + self.resy + dim1 + dim2*dim2*include_lowres*self.dimension + dim3*dim3*dim3 + 1 + bias
           width = (-b + np.sqrt(b*b - 4*a*c)) / (2*a) # formula of roots
           dim_features = int(np.round(width))
 
@@ -165,7 +145,6 @@ class GAPlane(nn.Module):
           else:
             self.line_feature_x = nn.Parameter(torch.rand(dim_features, dim1)*0.03 + 0.005) 
             self.line_feature_y = nn.Parameter(torch.rand(dim_features, dim1)*0.03 + 0.005)
-          # print(self.line_feature_x[:,0])
           if self.include_lowres:
             self.plane_feature = nn.Parameter(torch.randn(dim_features, dim2, dim2)*0.01)
             self.plane_feature_yz = nn.Parameter(torch.randn(dim_features, dim2, dim2)*0.01)
@@ -173,17 +152,11 @@ class GAPlane(nn.Module):
           
           self.volume_feature = nn.Parameter(torch.randn(dim_features, dim3, dim3, dim3)*0.001)
         else: # when signal is 2 dimension
-          # a = self.resx + self.resy + dim2**2 + self.num_hidden_layers
           enc_params = self.resx + self.resy + dim2**2
           b = enc_params + 1 + out_features
           width = (-b + np.sqrt(b*b - 4*a*c)) / (2*a) # formula of roots
           dim_features = int(np.round(width))
           
-          # b = self.resx+ self.resy + dim2*dim2*include_lowres + 1 + bias
-          
-          # width = (-b + np.sqrt(b*b - 4*a*c)) / (2*a) # formula of roots
-          # dim_features = int(np.floor(width))
-          # tqdm.write(f'{self.resx} + {self.resy}  + {dim2}*dim2*{include_lowres} + 1 + {bias}')
           tqdm.write(f'GAPlane number of features: {dim_features} dim2: {dim2} x {self.resx} y {self.resy}  a {a} b {b} c {c}')
           # Define the feature tensors
           # torch.manual_seed(0)
@@ -193,7 +166,6 @@ class GAPlane(nn.Module):
           else:
             self.line_feature_x = nn.Parameter(torch.rand(dim_features, self.resx)*0.03 + 0.005) 
             self.line_feature_y = nn.Parameter(torch.rand(dim_features, self.resy)*0.03 + 0.005)
-          # print(self.line_feature_x[:,0])
           if self.include_lowres:
             self.plane_feature = nn.Parameter(torch.randn(dim_features, dim2, dim2)*0.01)
           
@@ -213,54 +185,10 @@ class GAPlane(nn.Module):
           self.fc2 = nn.Linear(dim_features, m, bias=self.bias)
           self.fc2.weight.requires_grad = False
           if self.bias:
-            # stdv = 1. / np.sqrt(self.fc2.weight.size(1))
-            # self.fc2.bias.data.uniform_(0, stdv/10)  # so far no variations on this are helpful
             self.fc2.bias.requires_grad = False
 
         else:
-          raise ValueError(f"Invalid decoder {decoder}; expected linear, nonconvex, or convex")
-
-
-    # def forward(self, coords):
-        # # # Prepare coordinates for grid_sample
-        # x_coords = coords[..., 0].unsqueeze(-1)  # [batchx, batchy, 1]
-        # y_coords = coords[..., 1].unsqueeze(-1)  # [batchx, batchy, 1]
-
-        # # # Scale to [-1, 1] range for grid_sample
-        # # x_coords = (x_coords * 2 / self.resx) - 1
-        # # y_coords = (y_coords * 2 / self.resy) - 1
-        
-        # # Combine x and y coordinates
-        # gridx = torch.cat((x_coords, x_coords), dim=-1).unsqueeze(0).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # gridy = torch.cat((y_coords, y_coords), dim=-1).unsqueeze(0).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # # gridx = torch.cat((x_coords, x_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # # gridy = torch.cat((y_coords, y_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # # Interpolate line features using grid_sample
-        # line_features_x = self.line_feature_x.unsqueeze(0).unsqueeze(-1)  # [1, dim_features, dim1, 1]
-        # line_features_y = self.line_feature_y.unsqueeze(0).unsqueeze(-1)  # [1, dim_features, dim1, 1]
-        # # print(gridx.shape, line_features_x.shape)
-        # # Get the feature tensors for grid_sample
-        # feature_x = F.grid_sample(line_features_x, gridx, mode=self.interpolation, padding_mode='border', align_corners=True)  # [1, dim_features, batchx, batchy]
-        # feature_y = F.grid_sample(line_features_y, gridy, mode=self.interpolation, padding_mode='border', align_corners=True)  # [1, dim_features, batchx, batchy]
-
-        # # Prepare for 2D interpolation for the plane feature
-        # sampled_plane_features = 0
-        # if self.include_lowres:
-        #   plane_features = self.plane_feature.unsqueeze(0)  # [1, dim_features, dim2, dim2]
-        #   plane_grid = torch.cat((x_coords, y_coords), dim=-1).unsqueeze(0).unsqueeze(0)  # [1, batchx, batchy, 2]
-
-        #   # Sample from the plane feature using grid_sample
-        #   # print(plane_features.shape, plane_grid.shape)
-        #   sampled_plane_features = F.grid_sample(plane_features, plane_grid, mode=self.interpolation, align_corners=True)  # [1, dim_features, batchx, batchy]
-
-        # # Combine features
-        # if self.operation == 'add':
-        #     combined_features = feature_x + feature_y + sampled_plane_features  # [1, dim_features, batchx, batchy]
-        # elif self.operation == 'multiply':
-        #     combined_features = feature_x * feature_y + sampled_plane_features  # [1, dim_features, batchx, batchy]
-        # else:
-        #     raise ValueError(f"Invalid operation {self.operation}; expected add or multiply")
-          
+          raise ValueError(f"Invalid decoder {decoder}; expected linear, nonconvex, or convex")          
 
     def forward(self, coords):
         # # Prepare coordinates for grid_sample
@@ -269,14 +197,6 @@ class GAPlane(nn.Module):
         # print(x_coords.shape, y_coords.shape)
         if coords.shape[-1] == 3:
           z_coords = coords[..., 2].unsqueeze(-1)  # [batchx, batchy, 1]
-
-        # # Scale to [-1, 1] range for grid_sample
-        # x_coords = (x_coords * 2 / self.resx) - 1
-        # y_coords = (y_coords * 2 / self.resy) - 1
-        
-        # Combine x and y coordinates
-        # gridx = torch.cat((x_coords, x_coords), dim=-1).unsqueeze(0).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # gridy = torch.cat((y_coords, y_coords), dim=-1).unsqueeze(0).unsqueeze(0)  # [1, batchx, batchy, 2]
         gridx = torch.cat((x_coords, x_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
         gridy = torch.cat((y_coords, y_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
         if coords.shape[-1] == 3:
@@ -288,14 +208,11 @@ class GAPlane(nn.Module):
           gridy = gridy.unsqueeze(0)
           if coords.shape[-1] == 3:
             gridz = gridz.unsqueeze(0)
-        # gridx = torch.cat((x_coords, x_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
-        # gridy = torch.cat((y_coords, y_coords), dim=-1).unsqueeze(0)  # [1, batchx, batchy, 2]
         # Interpolate line features using grid_sample
         line_features_x = self.line_feature_x.unsqueeze(0).unsqueeze(-1)  # [1, dim_features, dim1, 1]
         line_features_y = self.line_feature_y.unsqueeze(0).unsqueeze(-1)  # [1, dim_features, dim1, 1]
         if coords.shape[-1] == 3:
           line_features_z = self.line_feature_z.unsqueeze(0).unsqueeze(-1)  # [1, dim_features, dim1, 1]
-        # print(gridx.shape, line_features_x.shape)
         # Get the feature tensors for grid_sample
         feature_x = F.grid_sample(line_features_x, gridx, mode=self.interpolation, padding_mode='border', align_corners=True)  # [1, dim_features, batchx, batchy]
         feature_y = F.grid_sample(line_features_y, gridy, mode=self.interpolation, padding_mode='border', align_corners=True)  # [1, dim_features, batchx, batchy]
@@ -324,7 +241,6 @@ class GAPlane(nn.Module):
               plane_grid_zx = plane_grid_zx.unsqueeze(0)
           
           # Sample from the plane feature using grid_sample
-          # print(plane_features.shape, plane_grid.shape)
           sampled_plane_features = F.grid_sample(plane_features, plane_grid, mode=self.interpolation, align_corners=True)  # [1, dim_features, batchx, batchy]
           if coords.shape[-1] == 3:
             volume_features = self.volume_feature.unsqueeze(0)  # [1, dim_features, dim2, dim2]
@@ -334,9 +250,7 @@ class GAPlane(nn.Module):
         
         sampled_volume_features = 0
         if coords.shape[-1] == 3:
-          # print(f'features {volume_features.shape} grid {volume_grid.shape}')
           sampled_volume_features = F.grid_sample(volume_features, volume_grid, mode=self.interpolation, align_corners=True)  # [1, dim_features, batchx, batchy]
-          # print(sampled_volume_features.shape)
         # Combine features
         if self.operation == 'add':
             
@@ -353,16 +267,13 @@ class GAPlane(nn.Module):
               combined_features = feature_x * feature_y + sampled_plane_features # [1, dim_features, batchx, batchy]
         else:
             raise ValueError(f"Invalid operation {self.operation}; expected add or multiply")
-        # print(combined_features.shape)
         # Reorder axes so this can be fed to the MLP
         if coords.shape[-1] == 3:
           combined_features = combined_features.squeeze(0).permute(1, 2, 3, 0)  # [batchx, batchy, batchz, dim_features]
         else:
           combined_features = combined_features.squeeze(0).permute(1, 2, 0)  # [batchx, batchy, dim_features]
-        # combined_features = combined_features.squeeze()
-        # print(combined_features.shape)
+
         # Pass through decoder
-        # print(combined_features.shape)
         if self.decoder == 'linear' or self.decoder == 'nonconvex':
           
           output = self.mlp(combined_features).squeeze()  # [batchx, batchy]
@@ -370,7 +281,6 @@ class GAPlane(nn.Module):
         else:  # convex
           output = self.fc1(combined_features) * (self.fc2(combined_features) > 0)  # [batchx, batchy, m]
           output = torch.mean(output, dim=-1)  # [batchx, batchy]
-        # print(f'output {output.shape}')
         
         return output
 
