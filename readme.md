@@ -1,6 +1,6 @@
 # Grid vs INR Signal Representation Experiments
 
-This repository provides a unified framework for evaluating **Implicit Neural Representations (INRs)**, **grid-based**, and **hybrid** models on a variety of synthetic and real-world signals. It accompanies our paper *"Grids Often Outperform Implicit Neural Representations"* (NeurIPS 2025).
+This repository provides a unified framework for evaluating **Implicit Neural Representations (INRs)**, **grid-based**, and **hybrid** models on a variety of synthetic and real-world signals. It accompanies our paper *"Grids Often Outperform Implicit Neural Representations"* (Preprint).
 ---
 
 ## Prerequisites
