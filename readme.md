@@ -1,6 +1,8 @@
 # INR-benchmark
 
-Unified benchmark for implicit-neural, grid, and hybrid representations on synthetic & real signals — code for the preprint **“Grids Often Outperform Implicit Neural Representations.”**
+Unified benchmark for implicit-neural, grid, and hybrid representations on synthetic & real signals
+
+Code for the paper *“Grids Often Outperform Implicit Neural Representations. (preprint)”*
 ---
 
 ## Prerequisites
