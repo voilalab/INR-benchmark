@@ -1,0 +1,53 @@
+{
+    "models": {
+        "FourFeat": {
+            "lr": 0.001,
+            "hparams": [
+                20
+            ]
+        },
+        "Siren": {
+            "lr": 0.0001,
+            "hparams": [
+                90
+            ]
+        },
+        "Wire": {
+            "lr": 0.0005,
+            "hparams": [
+                [
+                    15
+                ],
+                [
+                    10
+                ]
+            ]
+        },
+        "Grid":{
+            "lr": 0.1
+        },
+        "ReLU":{
+            "lr":5e-3
+        },
+        "GAPlane":{
+            "lr":0.01
+        },
+        "FourFeat_Embed": {
+            "lr": 0.001
+        },
+        "Instant_NGP": {
+            "lr" : 1e-2
+        },
+        "FourFeat_5e3": {
+            "lr": 0.001
+        },
+        "GSplat":{
+            "lr": 0.05
+        },
+        "BACON":{
+            "lr": 0.05
+        }
+    },
+    "iters": 1000,
+    "grid_interp": "bicubic"
+}
