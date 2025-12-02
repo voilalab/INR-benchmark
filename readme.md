@@ -1,8 +1,12 @@
-# INR-benchmark
+# Grids Often Outperform Implicit Neural Representations at Compressing Dense Signals <span style="font-size:0.8em;">*(Accepted to NeurIPS 2025)*</span>
 
-Unified benchmark for implicit-neural, grid, and hybrid representations on synthetic & real signals
 
-Code for the paper *“Grids Often Outperform Implicit Neural Representations at Compressing Dense Signals. (Accepted to NeurIPS 2025)”*
+[![arXiv](https://img.shields.io/badge/arXiv-2506.11139-b31b1b.svg?logo=arxiv&logoColor=white)](https://arxiv.org/abs/2506.11139)
+[![NeurIPS 2025 Poster](https://img.shields.io/badge/NeurIPS%202025-Poster-blue.svg)](https://neurips.cc/virtual/2025/loc/san-diego/poster/118285)
+
+This repository provides the official implementation of the paper above.  
+It includes a unified benchmark framework for comparing implicit-neural, grid-based, and hybrid representations on a variety of synthetic and real-world signals.
+
 ---
 
 ## Prerequisites
