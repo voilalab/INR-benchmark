@@ -4,7 +4,7 @@
 [![NeurIPS 2025 Poster](https://img.shields.io/badge/NeurIPS%202025-Poster-blue.svg)](https://neurips.cc/virtual/2025/loc/san-diego/poster/118285)
 
 This repository provides the official implementation of the paper above.  
-It includes a unified benchmark framework for comparing implicit-neural, grid-based, and hybrid representations on a variety of synthetic and real-world signals.
+It includes a unified benchmark framework for comparing implicit-neural, grid-based, and hybrid representations on a variety of synthetic and real-world signals in compressive regime.
 
 ---
 
