@@ -2,7 +2,7 @@
 
 Unified benchmark for implicit-neural, grid, and hybrid representations on synthetic & real signals
 
-Code for the paper *“Grids Often Outperform Implicit Neural Representations. (preprint)”*
+Code for the paper *“Grids Often Outperform Implicit Neural Representations at Compressing Dense Signals. (Accepted to NeurIPS 2025)”*
 ---
 
 ## Prerequisites
