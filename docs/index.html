@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Grids Often Outperform INRs | NeurIPS 2025</title>
+    <meta name="description" content="A systematic benchmark of implicit neural, hybrid, discrete, and grid representations across 2D and 3D dense signals.">
+    <meta name="theme-color" content="#c0995e">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Grids Often Outperform Implicit Neural Representations">
+    <meta property="og:description" content="What should we use to compress dense signals: neural fields, hybrids, or a simple interpolated grid?">
+    <meta property="og:image" content="https://voilalab.github.io/INR-benchmark/static/images/benchmark-overfitting.png">
+    <meta property="og:url" content="https://voilalab.github.io/INR-benchmark/">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+    <link rel="icon" href="static/images/voila.ico" sizes="64x64">
+    <link rel="stylesheet" href="static/css/site.css">
+    <script src="static/js/site.js" defer></script>
+  </head>
+  <body class="theme-blue">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <nav class="site-nav" aria-label="VOILA Lab navigation">
+      <div class="nav-inner">
+        <a class="brand" href="https://voilalab.github.io/" aria-label="VOILA Lab home">
+          <img src="static/images/voila.ico" alt="" width="30" height="30">
+          <strong>VOILA Lab @ GT</strong>
+        </a>
+        <div class="nav-links">
+          <a href="https://voilalab.github.io/">Home</a>
+          <a href="https://voilalab.github.io/team">Team</a>
+          <a href="https://voilalab.github.io/research">Research</a>
+          <a href="https://voilalab.github.io/papers">Papers</a>
+          <a class="nav-active" href="#top" aria-current="page">Grids vs INRs</a>
+        </div>
+      </div>
+    </nav>
+
+    <main id="main-content">
+      <header class="hero" id="top">
+        <div class="container hero-card">
+          <p class="eyebrow">VOILA Lab @ GT <span>/</span> NeurIPS 2025</p>
+          <h1><span>Grids</span> Often Outperform<br>Implicit Neural Representations</h1>
+          <p class="hero-subtitle">A controlled benchmark of how neural fields, hybrid models, discrete representations, and interpolated grids compress dense 2D and 3D signals.</p>
+          <div class="authors">
+            <a href="https://voilalab.github.io/team">Namhoon Kim</a>
+            <a href="https://voilalab.github.io/team">Sara Fridovich-Keil</a>
+          </div>
+          <p class="affiliation">Georgia Institute of Technology · VOILA Lab</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="https://arxiv.org/pdf/2506.11139" target="_blank" rel="noreferrer">Paper PDF ↗</a>
+            <a class="button" href="https://arxiv.org/abs/2506.11139" target="_blank" rel="noreferrer">arXiv ↗</a>
+            <a class="button" href="https://neurips.cc/virtual/2025/poster/118285" target="_blank" rel="noreferrer">NeurIPS ↗</a>
+            <a class="button" href="https://github.com/voilalab/INR-benchmark" target="_blank" rel="noreferrer">Code ↗</a>
+          </div>
+        </div>
+        <div class="container-wide teaser-card">
+          <img src="static/images/benchmark-overfitting.png" alt="Qualitative comparison of eight signal representations on synthetic and real 2D and 3D signals" width="4278" height="1221">
+          <p><strong>Extreme compression reveals structural bias.</strong> At roughly 1% of the original signal size, each representation leaves a distinct signature—while the simple grid remains a remarkably strong baseline.</p>
+        </div>
+      </header>
+
+      <section class="stat-strip" aria-label="Benchmark scale">
+        <div class="container stats">
+          <div><strong>8</strong><span>representation families</span></div>
+          <div><strong>2D + 3D</strong><span>synthetic and real signals</span></div>
+          <div><strong>10<sup>4</sup>–3×10<sup>6</sup></strong><span>trainable parameters</span></div>
+          <div><strong>5</strong><span>fitting and inverse tasks</span></div>
+        </div>
+      </section>
+
+      <section class="section" id="abstract">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">The question</p>
+            <h2>Are neural fields always the right compression primitive?</h2>
+          </div>
+          <div class="two-column">
+            <article class="prose-card">
+              <p>Implicit neural representations have delivered striking results, but comparisons are often made on different data, at different model sizes, and with different tuning budgets. We put the leading families on the same footing.</p>
+              <p>Across dense natural and synthetic signals, a regularized grid with interpolation often trains faster and reaches higher or comparable fidelity at the same parameter budget. The exceptions are informative: neural and hybrid models can excel when the signal has lower-dimensional structure, such as binary shape contours.</p>
+            </article>
+            <aside class="takeaway-card">
+              <p class="mini-label">Central finding</p>
+              <blockquote>INRs are not an all-purpose replacement for grids. Their advantage depends on the signal’s structure—not just its dimension.</blockquote>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="benchmark">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">Benchmark design</p>
+            <h2>One protocol, deliberately diverse signals.</h2>
+            <p>We vary effective bandwidth, model size, signal dimension, and task while keeping evaluation consistent.</p>
+          </div>
+          <div class="card-grid four">
+            <article><span class="card-index">01</span><h3>Synthetic structure</h3><p>Spheres, bandlimited noise, Sierpinski fractals, and a radial Star Target expose scale-dependent bias.</p></article>
+            <article><span class="card-index">02</span><h3>Real signals</h3><p>DIV2K imagery, sparse-view chest CT, and Stanford Dragon occupancy and surface volumes.</p></article>
+            <article><span class="card-index">03</span><h3>Eight model families</h3><p>FFN, SIREN, WIRE, GA-Planes, Instant-NGP, GSplat, BACON, and an interpolated Grid.</p></article>
+            <article><span class="card-index">04</span><h3>Beyond fitting</h3><p>Overfitting, denoising, super-resolution, tomography, and 3D shape upsampling.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="results">
+        <div class="container-wide">
+          <div class="section-heading narrow">
+            <p class="section-kicker">Results explorer</p>
+            <h2>See where each representation spends its capacity.</h2>
+          </div>
+          <div class="results-shell">
+            <div class="tabs" role="tablist" aria-label="Result figures">
+              <button type="button" role="tab" aria-selected="true" aria-controls="result-overfit" data-tab="result-overfit">Compressed fitting</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="result-inverse" data-tab="result-inverse">Inverse problems</button>
+              <button type="button" role="tab" aria-selected="false" aria-controls="result-heatmap" data-tab="result-heatmap">Bandwidth sweep</button>
+            </div>
+            <figure class="result-panel" id="result-overfit" role="tabpanel">
+              <img src="static/images/benchmark-overfitting.png" alt="Qualitative overfitting comparison across methods">
+              <figcaption>At 10,000 parameters, grids remain competitive across dense signals; WIRE and GA-Planes are especially strong on compressed 3D shapes.</figcaption>
+            </figure>
+            <figure class="result-panel" id="result-inverse" role="tabpanel" hidden>
+              <img src="static/images/benchmark-inverse.png" alt="Qualitative results on CT, denoising, image super-resolution, and 3D super-resolution">
+              <figcaption>TV-regularized grids lead chest CT reconstruction and stay near-optimal for natural-image denoising and super-resolution; specialized models win selected 3D tasks.</figcaption>
+            </figure>
+            <figure class="result-panel" id="result-heatmap" role="tabpanel" hidden>
+              <img src="static/images/benchmark-heatmap.png" alt="Heatmaps comparing representation performance across model size and signal bandwidth">
+              <figcaption>Compression quality follows model size and signal bandwidth in a nearly power-law pattern, making representation limits visible rather than anecdotal.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="findings">
+        <div class="container">
+          <div class="section-heading"><p class="section-kicker">Practical guidance</p><h2>What wins where?</h2></div>
+          <div class="finding-grid">
+            <article class="finding strong"><p class="mini-label">Choose a grid when</p><h3>The signal is dense and fidelity-per-parameter matters.</h3><p>Interpolation plus task-appropriate regularization is fast, stable, and difficult to beat for bandlimited signals and many natural-image inverse problems.</p></article>
+            <article class="finding"><p class="mini-label">Consider an INR when</p><h3>The signal has lower-dimensional or binary structure.</h3><p>Neural and hybrid representations become more compelling on contours, occupancy boundaries, and selected highly compressed 3D tasks.</p></article>
+            <article class="finding"><p class="mini-label">Always compare</p><h3>At matched parameter budgets and across scales.</h3><p>A single model size or signal type can conceal instability, compute cost, and frequency-dependent artifacts.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section citation" id="citation">
+        <div class="container">
+          <div class="section-heading"><p class="section-kicker">Citation</p><h2>If this benchmark is useful, please cite it.</h2></div>
+          <div class="bib-card">
+            <div class="bib-toolbar"><span>BibTeX</span><button type="button" data-copy-bib>Copy</button><span class="copy-status" aria-live="polite"></span></div>
+            <pre><code id="bibtex">@inproceedings{kim2025grids,
+  title     = {Grids Often Outperform Implicit Neural Representations
+               at Compressing Dense Signals},
+  author    = {Kim, Namhoon and Fridovich-Keil, Sara},
+  booktitle = {Advances in Neural Information Processing Systems},
+  year      = {2025},
+  url       = {https://arxiv.org/abs/2506.11139}
+}</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div><h2>VOILA Lab @ GT</h2><a href="https://voilalab.github.io/research">Research</a><br><a href="https://voilalab.github.io/papers">Publications</a><br><a href="https://voilalab.github.io/team">People</a></div>
+        <div><h2>Project</h2><a href="https://arxiv.org/abs/2506.11139">Paper</a><br><a href="https://github.com/voilalab/INR-benchmark">Code</a><br><a href="#top">Back to top</a></div>
+      </div>
+      <p class="footer-note">Grids Often Outperform INRs · NeurIPS 2025 · Georgia Tech</p>
+    </footer>
+  </body>
+</html>
