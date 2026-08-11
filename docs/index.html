@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="static/css/site.css">
     <script src="static/js/site.js" defer></script>
   </head>
-  <body class="theme-blue">
+  <body class="theme-gold">
     <a class="skip-link" href="#main-content">Skip to content</a>
     <nav class="site-nav" aria-label="VOILA Lab navigation">
       <div class="nav-inner">
@@ -59,8 +59,8 @@
           </div>
         </div>
         <div class="container-wide teaser-card">
-          <img src="static/images/benchmark-overfitting.png" alt="Qualitative comparison of eight signal representations on synthetic and real 2D and 3D signals" width="4278" height="1221">
-          <p><strong>Extreme compression reveals structural bias.</strong> At roughly 1% of the original signal size, each representation leaves a distinct signature—while the simple grid remains a remarkably strong baseline.</p>
+          <img src="static/images/benchmark-overfitting.png" alt="PSNR by parameter budget on DIV2K and Stanford Dragon signals, with a training-speed comparison" width="4278" height="1221">
+          <p><strong>Matched-budget curves tell the full story.</strong> Across dense 2D and 3D signals, the interpolated grid is a fast, remarkably strong baseline—while adaptive models win selected structured 3D cases.</p>
         </div>
       </header>
 
@@ -77,8 +77,10 @@
         <div class="container">
           <a href="#benchmark">Benchmark</a>
           <a href="#models">Models</a>
-          <a href="#quantitative">Quantitative data</a>
-          <a href="#results">Figures</a>
+          <a href="#quantitative">Data</a>
+          <a href="#qualitative">Qualitative</a>
+          <a href="#heatmaps">Heatmaps</a>
+          <a href="#curves">Curves</a>
           <a href="#findings">Takeaways</a>
           <a href="#citation">Citation</a>
         </div>
@@ -253,31 +255,151 @@
         </div>
       </section>
 
-      <section class="section" id="results">
+      <section class="section" id="qualitative">
         <div class="container-wide">
           <div class="section-heading narrow">
-            <p class="section-kicker">Visual evidence</p>
-            <h2>See the artifacts behind the scores.</h2>
-            <p>The qualitative outputs reveal each representation’s structural bias, while the heatmaps expose how capacity scales with bandwidth and model size.</p>
+            <p class="section-kicker">Qualitative results</p>
+            <h2>The complete visual evidence from the appendix.</h2>
+            <p>Outputs are organized by signal and task so the representation artifacts behind the aggregate scores stay visible. Select any plate to inspect the paper figure at full resolution.</p>
           </div>
-          <div class="results-shell">
-            <div class="tabs" role="tablist" aria-label="Result figures">
-              <button type="button" role="tab" aria-selected="true" aria-controls="result-overfit" data-tab="result-overfit">Compressed fitting</button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="result-inverse" data-tab="result-inverse">Inverse problems</button>
-              <button type="button" role="tab" aria-selected="false" aria-controls="result-heatmap" data-tab="result-heatmap">Bandwidth sweep</button>
+
+          <div class="evidence-group">
+            <div class="subsection-heading">
+              <p class="section-kicker">Synthetic signals</p>
+              <h3>Six controlled tests expose frequency and geometry bias.</h3>
+              <p>Each plate sweeps all matched parameter budgets across FFN, SIREN, WIRE, GA-Planes, Instant-NGP, GSplat where applicable, BACON, and Grid.</p>
             </div>
-            <figure class="result-panel" id="result-overfit" role="tabpanel">
-              <img src="static/images/benchmark-overfitting.png" alt="Qualitative overfitting comparison across methods">
-              <figcaption>At 10,000 parameters, grids remain competitive across dense signals; WIRE and GA-Planes are especially strong on compressed 3D shapes.</figcaption>
-            </figure>
-            <figure class="result-panel" id="result-inverse" role="tabpanel" hidden>
-              <img src="static/images/benchmark-inverse.png" alt="Qualitative results on CT, denoising, image super-resolution, and 3D super-resolution">
-              <figcaption>TV-regularized grids lead chest CT reconstruction and stay near-optimal for natural-image denoising and super-resolution; specialized models win selected 3D tasks.</figcaption>
-            </figure>
-            <figure class="result-panel" id="result-heatmap" role="tabpanel" hidden>
-              <img src="static/images/benchmark-heatmap.png" alt="Heatmaps comparing representation performance across model size and signal bandwidth">
-              <figcaption>Compression quality follows model size and signal bandwidth in a nearly power-law pattern, making representation limits visible rather than anecdotal.</figcaption>
-            </figure>
+            <div class="evidence-grid evidence-grid-synthetic">
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-2d-spheres.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-2d-spheres.webp" alt="Qualitative fitting results for 2D sparse spheres across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>2D Spheres</strong><span>Binary contours reward representations that allocate capacity near sparse boundaries.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-2d-bandlimited.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-2d-bandlimited.webp" alt="Qualitative fitting results for a 2D bandlimited signal across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>2D Bandlimited</strong><span>Dense high frequencies reveal each model family’s effective bandwidth.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-2d-sierpinski.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-2d-sierpinski.webp" alt="Qualitative fitting results for a 2D Sierpinski signal across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>2D Sierpinski</strong><span>Repeated multiscale edges make structural bias especially easy to see.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-2d-star-target.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-2d-star-target.webp" alt="Star Target outputs and error maps across representation methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>2D Star Target</strong><span>Reconstructions and error maps localize the radius where each method loses frequency support.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-3d-spheres.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-3d-spheres.webp" alt="Qualitative fitting results for 3D sparse spheres across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>3D Spheres</strong><span>Sparse volumetric boundaries favor adaptive and factorized representations at selected budgets.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/synthetic-3d-bandlimited.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/synthetic-3d-bandlimited.webp" alt="Qualitative fitting results for a 3D bandlimited signal across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>3D Bandlimited</strong><span>Dense volumetric texture makes compression artifacts visible slice by slice.</span></figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <div class="evidence-group">
+            <div class="subsection-heading">
+              <p class="section-kicker">Real signals and inverse problems</p>
+              <h3>Images, CT, and Stanford Dragon volumes.</h3>
+              <p>The full appendix plates cover direct fitting, sparse-view reconstruction, denoising, image super-resolution, and 3D super-resolution in both slice and rendering views.</p>
+            </div>
+            <div class="evidence-grid">
+              <figure class="evidence-card evidence-card-wide">
+                <a class="figure-link" href="static/images/qualitative/real-div2k-fitting.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/real-div2k-fitting.webp" alt="DIV2K direct fitting results across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>DIV2K · direct fitting</strong><span>Natural-image fitting shows small-budget color bias and the instability of selected models in the over-parameterized regime.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/dragon-occupancy-slices.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/dragon-occupancy-slices.webp" alt="Stanford Dragon occupancy fitting shown as volume slices across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Occupancy · fitting slices</strong><span>Binary interior slices expose topology and boundary preservation.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/dragon-surface-slices.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/dragon-surface-slices.webp" alt="Stanford Dragon surface fitting shown as volume slices across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Surface · fitting slices</strong><span>A thin 3D surface rewards representations that focus capacity near geometry.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/dragon-occupancy-rendering.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/dragon-occupancy-rendering.webp" alt="Rendered Stanford Dragon occupancy fitting results across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Occupancy · renderings</strong><span>Rendered geometry makes fragmented or over-smoothed occupancy fields immediately apparent.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/dragon-surface-rendering.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/dragon-surface-rendering.webp" alt="Rendered Stanford Dragon surface fitting results across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Surface · renderings</strong><span>Surface continuity varies sharply across representation family and budget.</span></figcaption>
+              </figure>
+              <figure class="evidence-card evidence-card-wide">
+                <a class="figure-link" href="static/images/qualitative/inverse-ct.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-ct.webp" alt="Sparse-view chest CT reconstruction across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Sparse-view CT reconstruction</strong><span>The TV-regularized Grid preserves anatomy and suppresses streak artifacts across the compressive regime.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-div2k-denoise-005.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-div2k-denoise-005.webp" alt="DIV2K image denoising with noise level epsilon 0.05 across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>DIV2K denoising · ε = 0.05</strong><span>Sharper reconstructions trade off against texture artifacts as capacity grows.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-div2k-denoise-01.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-div2k-denoise-01.webp" alt="DIV2K image denoising with noise level epsilon 0.1 across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>DIV2K denoising · ε = 0.1</strong><span>Stronger noise makes overfitting and representation regularization easier to distinguish.</span></figcaption>
+              </figure>
+              <figure class="evidence-card evidence-card-wide">
+                <a class="figure-link" href="static/images/qualitative/inverse-div2k-super-resolution.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-div2k-super-resolution.webp" alt="DIV2K four-times super-resolution across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>DIV2K · 4× super-resolution</strong><span>FFN, WIRE, GA-Planes, and Grid converge to closely matched visual quality at medium and large budgets.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-dragon-occupancy-sr.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-dragon-occupancy-sr.webp" alt="Stanford Dragon occupancy super-resolution slices across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Occupancy · SR slices</strong><span>GA-Planes retains high-IoU structure across the full model-size sweep.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-dragon-surface-sr.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-dragon-surface-sr.webp" alt="Stanford Dragon surface super-resolution slices across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Surface · SR slices</strong><span>Thin-surface recovery remains a favorable case for adaptive factorized models.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-dragon-occupancy-sr-rendering.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-dragon-occupancy-sr-rendering.webp" alt="Rendered Stanford Dragon occupancy super-resolution results across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Occupancy · SR renderings</strong><span>Rendering reveals missing regions that are less obvious in individual slices.</span></figcaption>
+              </figure>
+              <figure class="evidence-card">
+                <a class="figure-link" href="static/images/qualitative/inverse-dragon-surface-sr-rendering.webp" target="_blank" rel="noreferrer"><img src="static/images/qualitative/inverse-dragon-surface-sr-rendering.webp" alt="Rendered Stanford Dragon surface super-resolution results across methods and parameter budgets" loading="lazy"></a>
+                <figcaption><strong>Dragon Surface · SR renderings</strong><span>The final 3D view exposes continuity, sparsity, and geometric completeness.</span></figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="heatmaps">
+        <div class="container-wide">
+          <div class="section-heading narrow">
+            <p class="section-kicker">Bandwidth heatmaps</p>
+            <h2>Every synthetic dataset, every budget, every bandwidth.</h2>
+            <p>The top half of each plate reports absolute PSNR. The bottom half reports each method’s PSNR gap relative to Grid: red is better than Grid, blue is worse, and Grid itself is zero.</p>
+          </div>
+          <p class="heatmap-key"><strong>Method order:</strong> FFN · SIREN · WIRE · GA-Planes · Instant-NGP · GSplat · BACON · Grid <span>· GSplat is not evaluated for 3D volumes.</span></p>
+
+          <div class="evidence-group compact-group">
+            <div class="subsection-heading"><p class="section-kicker">2D sweeps</p><h3>Dense frequencies, sparse geometry, fractals, and a radial target.</h3></div>
+            <div class="heatmap-stack">
+              <figure class="heatmap-card"><figcaption><strong>2D Bandlimited</strong><span>Model size increases downward; normalized bandwidth increases left to right.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/2d_BandlimitedSignal.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/2d_BandlimitedSignal.png" alt="PSNR and PSNR gap heatmaps for the 2D bandlimited signal across eight methods, six model sizes, and nine bandwidths" loading="lazy"></a></figure>
+              <figure class="heatmap-card"><figcaption><strong>2D Spheres</strong><span>Sparse binary contours produce a markedly different advantage map from dense signals.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/2d_SparseSphereSignal.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/2d_SparseSphereSignal.png" alt="PSNR and PSNR gap heatmaps for 2D sparse spheres across eight methods, six model sizes, and nine feature scales" loading="lazy"></a></figure>
+              <figure class="heatmap-card"><figcaption><strong>2D Sierpinski</strong><span>GA-Planes and Instant-NGP show their strongest positive gaps at intermediate budgets.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/2d_Sierpinski.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/2d_Sierpinski.png" alt="PSNR and PSNR gap heatmaps for the 2D Sierpinski signal across eight methods, six model sizes, and nine levels" loading="lazy"></a></figure>
+              <figure class="heatmap-card"><figcaption><strong>2D Star Target</strong><span>The continuous radial frequency sweep localizes where each method departs from Grid.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/2d_StarTarget.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/2d_StarTarget.png" alt="PSNR and PSNR gap heatmaps for the 2D Star Target across eight methods, six model sizes, and nine bandwidth regions" loading="lazy"></a></figure>
+            </div>
+          </div>
+
+          <div class="evidence-group compact-group">
+            <div class="subsection-heading"><p class="section-kicker">3D sweeps</p><h3>Volumetric bandwidth and sparse boundaries.</h3></div>
+            <div class="heatmap-stack">
+              <figure class="heatmap-card"><figcaption><strong>3D Bandlimited</strong><span>Grid remains especially competitive as volumetric bandwidth and model size grow.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/3d_BandlimitedSignal.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/3d_BandlimitedSignal.png" alt="PSNR and PSNR gap heatmaps for the 3D bandlimited signal across seven applicable methods, six model sizes, and nine bandwidths" loading="lazy"></a></figure>
+              <figure class="heatmap-card"><figcaption><strong>3D Spheres</strong><span>Adaptive models gain on sparse surfaces at selected model sizes and feature scales.</span></figcaption><a class="figure-scroll" href="static/images/heatmaps/3d_SparseSphereSignal.png" target="_blank" rel="noreferrer"><img src="static/images/heatmaps/3d_SparseSphereSignal.png" alt="PSNR and PSNR gap heatmaps for 3D sparse spheres across seven applicable methods, six model sizes, and nine feature scales" loading="lazy"></a></figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="curves">
+        <div class="container-wide">
+          <div class="section-heading narrow">
+            <p class="section-kicker">Performance curves</p>
+            <h2>Aggregate trends, separate from the qualitative plates.</h2>
+            <p>These plots summarize fidelity across matched parameter budgets and isolate training speed and inverse-problem performance without mixing them into the visual appendix.</p>
+          </div>
+          <div class="curve-stack">
+            <figure class="curve-card"><figcaption><strong>Compressed fitting and training speed</strong><span>DIV2K and Stanford Dragon PSNR across parameter budgets, plus relative optimization speed.</span></figcaption><a class="figure-scroll" href="static/images/benchmark-overfitting.png" target="_blank" rel="noreferrer"><img src="static/images/benchmark-overfitting.png" alt="Performance curves for direct signal fitting and training speed across representation methods" loading="lazy"></a></figure>
+            <figure class="curve-card"><figcaption><strong>Inverse problems</strong><span>CT reconstruction, image denoising, 4× super-resolution, and 3D super-resolution across matched budgets.</span></figcaption><a class="figure-scroll" href="static/images/benchmark-inverse.png" target="_blank" rel="noreferrer"><img src="static/images/benchmark-inverse.png" alt="Performance curves for CT, denoising, image super-resolution, and 3D super-resolution across representation methods" loading="lazy"></a></figure>
           </div>
         </div>
       </section>
