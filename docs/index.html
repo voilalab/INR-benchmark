@@ -11,6 +11,10 @@
     <meta property="og:description" content="What should we use to compress dense signals: neural fields, hybrids, or a simple interpolated grid?">
     <meta property="og:image" content="https://voilalab.github.io/INR-benchmark/static/images/benchmark-overfitting.png">
     <meta property="og:url" content="https://voilalab.github.io/INR-benchmark/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Grids Often Outperform Implicit Neural Representations">
+    <meta name="twitter:description" content="A data-rich benchmark across models, parameter budgets, signals, and inverse problems.">
+    <meta name="twitter:image" content="https://voilalab.github.io/INR-benchmark/static/images/benchmark-overfitting.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
@@ -63,11 +67,22 @@
       <section class="stat-strip" aria-label="Benchmark scale">
         <div class="container stats">
           <div><strong>8</strong><span>representation families</span></div>
-          <div><strong>2D + 3D</strong><span>synthetic and real signals</span></div>
-          <div><strong>10<sup>4</sup>–3×10<sup>6</sup></strong><span>trainable parameters</span></div>
-          <div><strong>5</strong><span>fitting and inverse tasks</span></div>
+          <div><strong>6</strong><span>matched parameter budgets</span></div>
+          <div><strong>9</strong><span>signal bandwidth levels</span></div>
+          <div><strong>4</strong><span>PSNR, SSIM, LPIPS, and IoU</span></div>
         </div>
       </section>
+
+      <nav class="project-menu" aria-label="Project page sections">
+        <div class="container">
+          <a href="#benchmark">Benchmark</a>
+          <a href="#models">Models</a>
+          <a href="#quantitative">Quantitative data</a>
+          <a href="#results">Figures</a>
+          <a href="#findings">Takeaways</a>
+          <a href="#citation">Citation</a>
+        </div>
+      </nav>
 
       <section class="section" id="abstract">
         <div class="container">
@@ -101,14 +116,149 @@
             <article><span class="card-index">03</span><h3>Eight model families</h3><p>FFN, SIREN, WIRE, GA-Planes, Instant-NGP, GSplat, BACON, and an interpolated Grid.</p></article>
             <article><span class="card-index">04</span><h3>Beyond fitting</h3><p>Overfitting, denoising, super-resolution, tomography, and 3D shape upsampling.</p></article>
           </div>
+
+          <div class="benchmark-detail">
+            <div class="subsection-heading">
+              <p class="section-kicker">Coverage map</p>
+              <h3>Every signal family and task in the benchmark.</h3>
+              <p>The synthetic suite isolates scale and structure; the real suite tests whether those trends survive in practical inverse problems.</p>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table coverage-table">
+                <thead><tr><th>Signal or dataset</th><th>Domain</th><th>Scale</th><th>Evaluated tasks</th></tr></thead>
+                <tbody>
+                  <tr><th>Bandlimited noise</th><td>2D + 3D synthetic</td><td>9 frequency cutoffs</td><td>Compressed signal fitting</td></tr>
+                  <tr><th>Spheres</th><td>2D + 3D synthetic</td><td>9 feature scales</td><td>Compressed shape fitting</td></tr>
+                  <tr><th>Sierpinski</th><td>2D synthetic</td><td>9 fractal levels</td><td>Compressed signal fitting</td></tr>
+                  <tr><th>Star Target</th><td>2D synthetic</td><td>Continuous radial frequency</td><td>Fitting, artifact analysis, hyperparameter tuning</td></tr>
+                  <tr><th>DIV2K</th><td>2D real · 10 images</td><td>High-resolution RGB</td><td>Fitting, 4× super-resolution, denoising at ε = 0.05 and 0.1</td></tr>
+                  <tr><th>Computed tomography</th><td>2D real · 7 scans</td><td>Sparse X-ray projections</td><td>Underdetermined CT reconstruction</td></tr>
+                  <tr><th>Stanford Dragon</th><td>3D real · occupancy + surface</td><td>≈1M voxels each</td><td>Volume fitting and super-resolution</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="metric-legend" aria-label="Evaluation metrics">
+              <span><strong>PSNR</strong> reconstruction fidelity</span>
+              <span><strong>SSIM</strong> structural similarity</span>
+              <span><strong>LPIPS</strong> perceptual distance</span>
+              <span><strong>IoU</strong> 3D shape overlap</span>
+            </div>
+          </div>
+
+          <div class="signal-atlas">
+            <div class="subsection-heading">
+              <p class="section-kicker">Synthetic signal atlas</p>
+              <h3>Complexity increases from 0.1 to 0.9.</h3>
+              <p>Twenty-seven source signals make the bandwidth sweep explicit instead of reducing it to a single example.</p>
+            </div>
+            <div class="atlas-scale" aria-hidden="true"><span>0.1</span><span>0.2</span><span>0.3</span><span>0.4</span><span>0.5</span><span>0.6</span><span>0.7</span><span>0.8</span><span>0.9</span></div>
+            <figure class="atlas-row">
+              <figcaption>Spheres</figcaption>
+              <div class="atlas-images">
+                <img src="static/images/signals/spheres-1.png" alt="Spheres signal at scale 0.1" loading="lazy"><img src="static/images/signals/spheres-2.png" alt="Spheres signal at scale 0.2" loading="lazy"><img src="static/images/signals/spheres-3.png" alt="Spheres signal at scale 0.3" loading="lazy"><img src="static/images/signals/spheres-4.png" alt="Spheres signal at scale 0.4" loading="lazy"><img src="static/images/signals/spheres-5.png" alt="Spheres signal at scale 0.5" loading="lazy"><img src="static/images/signals/spheres-6.png" alt="Spheres signal at scale 0.6" loading="lazy"><img src="static/images/signals/spheres-7.png" alt="Spheres signal at scale 0.7" loading="lazy"><img src="static/images/signals/spheres-8.png" alt="Spheres signal at scale 0.8" loading="lazy"><img src="static/images/signals/spheres-9.png" alt="Spheres signal at scale 0.9" loading="lazy">
+              </div>
+            </figure>
+            <figure class="atlas-row">
+              <figcaption>Sierpinski</figcaption>
+              <div class="atlas-images">
+                <img src="static/images/signals/sierpinski-1.png" alt="Sierpinski signal at scale 0.1" loading="lazy"><img src="static/images/signals/sierpinski-2.png" alt="Sierpinski signal at scale 0.2" loading="lazy"><img src="static/images/signals/sierpinski-3.png" alt="Sierpinski signal at scale 0.3" loading="lazy"><img src="static/images/signals/sierpinski-4.png" alt="Sierpinski signal at scale 0.4" loading="lazy"><img src="static/images/signals/sierpinski-5.png" alt="Sierpinski signal at scale 0.5" loading="lazy"><img src="static/images/signals/sierpinski-6.png" alt="Sierpinski signal at scale 0.6" loading="lazy"><img src="static/images/signals/sierpinski-7.png" alt="Sierpinski signal at scale 0.7" loading="lazy"><img src="static/images/signals/sierpinski-8.png" alt="Sierpinski signal at scale 0.8" loading="lazy"><img src="static/images/signals/sierpinski-9.png" alt="Sierpinski signal at scale 0.9" loading="lazy">
+              </div>
+            </figure>
+            <figure class="atlas-row">
+              <figcaption>Bandlimited</figcaption>
+              <div class="atlas-images">
+                <img src="static/images/signals/bandlimited-1.png" alt="Bandlimited signal at cutoff 0.1" loading="lazy"><img src="static/images/signals/bandlimited-2.png" alt="Bandlimited signal at cutoff 0.2" loading="lazy"><img src="static/images/signals/bandlimited-3.png" alt="Bandlimited signal at cutoff 0.3" loading="lazy"><img src="static/images/signals/bandlimited-4.png" alt="Bandlimited signal at cutoff 0.4" loading="lazy"><img src="static/images/signals/bandlimited-5.png" alt="Bandlimited signal at cutoff 0.5" loading="lazy"><img src="static/images/signals/bandlimited-6.png" alt="Bandlimited signal at cutoff 0.6" loading="lazy"><img src="static/images/signals/bandlimited-7.png" alt="Bandlimited signal at cutoff 0.7" loading="lazy"><img src="static/images/signals/bandlimited-8.png" alt="Bandlimited signal at cutoff 0.8" loading="lazy"><img src="static/images/signals/bandlimited-9.png" alt="Bandlimited signal at cutoff 0.9" loading="lazy">
+              </div>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="models">
+        <div class="container">
+          <div class="section-heading">
+            <p class="section-kicker">Representation roster</p>
+            <h2>Eight approaches, matched by trainable parameter count.</h2>
+            <p>The comparison spans pure neural fields, hybrid feature-grid models, a discrete Gaussian representation, and the explicit interpolated-grid baseline.</p>
+          </div>
+          <div class="table-scroll model-table-wrap">
+            <table class="data-table model-table">
+              <thead><tr><th>Method</th><th>Family</th><th>Representation</th><th>2D</th><th>3D</th></tr></thead>
+              <tbody>
+                <tr><th>FFN</th><td><span class="family-tag inr">INR</span></td><td>Fourier feature encoding + ReLU MLP</td><td>●</td><td>●</td></tr>
+                <tr><th>SIREN</th><td><span class="family-tag inr">INR</span></td><td>Coordinate MLP with sinusoidal activations</td><td>●</td><td>●</td></tr>
+                <tr><th>WIRE</th><td><span class="family-tag inr">INR</span></td><td>Coordinate MLP with complex Gabor wavelets</td><td>●</td><td>●</td></tr>
+                <tr><th>GA-Planes</th><td><span class="family-tag hybrid">Hybrid</span></td><td>Interpolated line, plane, and volume features + MLP</td><td>●</td><td>●</td></tr>
+                <tr><th>Instant-NGP</th><td><span class="family-tag hybrid">Hybrid</span></td><td>Multiresolution hash encoding + MLP</td><td>●</td><td>●</td></tr>
+                <tr><th>GSplat</th><td><span class="family-tag discrete">Discrete</span></td><td>Optimized 2D Gaussian primitives</td><td>●</td><td>—</td></tr>
+                <tr><th>BACON</th><td><span class="family-tag inr">INR</span></td><td>Coordinate network with controlled sine filters</td><td>●</td><td>●</td></tr>
+                <tr><th>Grid</th><td><span class="family-tag grid">Grid</span></td><td>Stored lattice values + bicubic or trilinear interpolation</td><td>●</td><td>●</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-muted" id="quantitative">
+        <div class="container-wide">
+          <div class="section-heading narrow">
+            <p class="section-kicker">Quantitative data explorer</p>
+            <h2>Compare every method at six parameter budgets.</h2>
+            <p>Select a task and model size to reproduce the main PSNR and IoU comparisons from the paper’s quantitative tables.</p>
+          </div>
+          <div class="metric-explorer">
+            <div class="explorer-controls">
+              <label>Task
+                <select data-result-task>
+                  <optgroup label="2D real signals">
+                    <option value="ct">CT reconstruction</option>
+                    <option value="div2k-denoise-005">DIV2K denoising · ε = 0.05</option>
+                    <option value="div2k-denoise-01">DIV2K denoising · ε = 0.1</option>
+                    <option value="div2k-sr">DIV2K 4× super-resolution</option>
+                    <option value="div2k-fit">DIV2K fitting</option>
+                  </optgroup>
+                  <optgroup label="3D real signals">
+                    <option value="dragon-occ-fit">Dragon occupancy fitting</option>
+                    <option value="dragon-surface-fit">Dragon surface fitting</option>
+                    <option value="dragon-occ-sr">Dragon occupancy super-resolution</option>
+                    <option value="dragon-surface-sr">Dragon surface super-resolution</option>
+                  </optgroup>
+                </select>
+              </label>
+              <label>Trainable parameters
+                <select data-result-budget>
+                  <option value="0">10,000</option>
+                  <option value="1">30,000</option>
+                  <option value="2" selected>100,000</option>
+                  <option value="3">300,000</option>
+                  <option value="4">1,000,000</option>
+                  <option value="5">3,000,000</option>
+                </select>
+              </label>
+              <div class="explorer-summary" aria-live="polite">
+                <span data-result-metric>PSNR · higher is better</span>
+                <strong data-result-winner>—</strong>
+              </div>
+            </div>
+            <p class="explorer-description" data-result-description></p>
+            <div class="table-scroll">
+              <table class="data-table results-table">
+                <thead><tr><th>Rank</th><th>Method</th><th>Family</th><th data-score-heading>PSNR (dB)</th><th>Δ vs Grid</th><th class="bar-heading">Relative score</th></tr></thead>
+                <tbody data-results-body></tbody>
+              </table>
+            </div>
+            <p class="data-note">Mean scores are shown for readability. The paper appendix reports standard deviations and the complete PSNR, SSIM, LPIPS, and IoU tables. GSplat is omitted from 3D tasks because it does not support direct volumetric fitting in this benchmark.</p>
+            <noscript><p class="data-note">Enable JavaScript to use the quantitative explorer.</p></noscript>
+          </div>
         </div>
       </section>
 
       <section class="section" id="results">
         <div class="container-wide">
           <div class="section-heading narrow">
-            <p class="section-kicker">Results explorer</p>
-            <h2>See where each representation spends its capacity.</h2>
+            <p class="section-kicker">Visual evidence</p>
+            <h2>See the artifacts behind the scores.</h2>
+            <p>The qualitative outputs reveal each representation’s structural bias, while the heatmaps expose how capacity scales with bandwidth and model size.</p>
           </div>
           <div class="results-shell">
             <div class="tabs" role="tablist" aria-label="Result figures">
